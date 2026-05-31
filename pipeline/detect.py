@@ -1,3 +1,4 @@
+from send_dwell_event import send_dwell_event
 from analytics import visitor_dwell
 from conversion import (
     add_visitor,
@@ -131,6 +132,12 @@ while True:
                             f"{dwell_seconds:.1f}s in {previous_zone}"
                         )
 
+                        send_dwell_event(
+                            track_id,
+                            previous_zone,
+                            dwell_seconds
+                        )
+
                         visitor_dwell.append(
                             {
                                 "visitor_id": track_id,
@@ -141,6 +148,10 @@ while True:
                                 )
                             }
                         )
+
+                        dwell_seconds = (
+                            current_time - start_time
+                        ).total_seconds()
 
                 zone_entry_time[track_id] = current_time
 

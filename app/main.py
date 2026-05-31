@@ -31,25 +31,91 @@ def health():
 @app.get("/journeys")
 def get_journeys():
 
+    journeys = {}
+
+    for event in events_db:
+
+        if event["event_type"] != "ZONE_ENTER":
+            continue
+
+        visitor = event["visitor_id"]
+        zone = event["zone_id"]
+
+        if visitor not in journeys:
+            journeys[visitor] = []
+
+        if (
+            len(journeys[visitor]) == 0
+            or journeys[visitor][-1] != zone
+        ):
+            journeys[visitor].append(zone)
+
     return {
-        "count": len(visitor_journeys),
-        "journeys": visitor_journeys
+        "count": len(journeys),
+        "journeys": journeys
     }
 
 @app.get("/dwell")
 def get_dwell():
 
+    dwell_records = []
+
+    for event in events_db:
+
+        if event["event_type"] == "DWELL":
+
+            dwell_records.append(
+                {
+                    "visitor_id":
+                        event["visitor_id"],
+
+                    "zone":
+                        event["zone_id"],
+
+                    "seconds":
+                        round(
+                            event["dwell_ms"]
+                            / 1000,
+                            2
+                        )
+                }
+            )
+
     return {
-        "count": len(visitor_dwell),
-        "records": visitor_dwell
+        "count": len(
+            dwell_records
+        ),
+        "records": dwell_records
     }
 
 @app.get("/conversion")
 def get_conversion():
 
-    total = len(total_visitors)
+    visitors = set()
+    checkout_visitors = set()
 
-    checkout = len(checkout_visitors)
+    for event in events_db:
+
+        if event["event_type"] == "ENTRY":
+
+            visitors.add(
+                event["visitor_id"]
+            )
+
+        if (
+            event["event_type"] == "ZONE_ENTER"
+            and event["zone_id"] == "CASH_COUNTER"
+        ):
+
+            checkout_visitors.add(
+                event["visitor_id"]
+            )
+
+    total = len(visitors)
+
+    checkout = len(
+        checkout_visitors
+    )
 
     rate = 0
 
@@ -62,7 +128,10 @@ def get_conversion():
     return {
         "total_visitors": total,
         "checkout_visitors": checkout,
-        "conversion_rate": round(rate, 2)
+        "conversion_rate": round(
+            rate,
+            2
+        )
     }
 
 
