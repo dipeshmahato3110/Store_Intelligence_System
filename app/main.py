@@ -1,5 +1,11 @@
 from fastapi import FastAPI
 from app.models import Event
+from pipeline.analytics import (
+    visitor_journeys,
+    visitor_dwell,
+    total_visitors,
+    checkout_visitors
+)
 
 app = FastAPI(
     title="Store Intelligence API"
@@ -21,6 +27,45 @@ def health():
     return {
         "status": "healthy"
     }
+
+@app.get("/journeys")
+def get_journeys():
+
+    return {
+        "count": len(visitor_journeys),
+        "journeys": visitor_journeys
+    }
+
+@app.get("/dwell")
+def get_dwell():
+
+    return {
+        "count": len(visitor_dwell),
+        "records": visitor_dwell
+    }
+
+@app.get("/conversion")
+def get_conversion():
+
+    total = len(total_visitors)
+
+    checkout = len(checkout_visitors)
+
+    rate = 0
+
+    if total > 0:
+
+        rate = (
+            checkout / total
+        ) * 100
+
+    return {
+        "total_visitors": total,
+        "checkout_visitors": checkout,
+        "conversion_rate": round(rate, 2)
+    }
+
+
 
 @app.post("/events/ingest")
 def ingest_event(event: Event):

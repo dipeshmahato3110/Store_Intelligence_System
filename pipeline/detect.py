@@ -1,6 +1,14 @@
+from analytics import visitor_dwell
+from conversion import (
+    add_visitor,
+    add_checkout,
+    print_metrics
+)
+from journey import update_journey
 from datetime import datetime
 from dwell import zone_entry_time
 from send_zone_event import send_zone_event
+from zones import ZONES
 from zones import get_zone
 from send_event import send_entry_event
 from ultralytics import YOLO
@@ -21,17 +29,19 @@ ENTRY_LINE_X = 800
 
 # Store previous x positions of tracked persons
 zone_history = {}
+visitor_zones = {}
 previous_positions = {}
 
 
 while True:
 
     ret, frame = cap.read()
-    print("Frame Shape:", frame.shape)
 
     if not ret:
         print("Video Finished")
         break
+
+    print("Frame Shape:", frame.shape)
 
     # Run tracking
     results = model.track(
@@ -42,6 +52,17 @@ while True:
     )
 
     annotated_frame = results[0].plot()
+
+    for zone_name, (x1, y1, x2, y2) in ZONES.items():
+
+        cv2.rectangle(
+            annotated_frame,
+            (x1, y1),
+            (x2, y2),
+            (255, 255, 0),
+            2
+        )
+
 
     # Draw ENTRY line
     cv2.line(
@@ -66,8 +87,25 @@ while True:
             center_x = int((x1 + x2) / 2)
             center_y = int((y1 + y2) / 2)
 
+            print(
+                f"Visitor {track_id} Center: "
+                f"({center_x}, {center_y})"
+            )
+
+            cv2.putText(
+                annotated_frame,
+                f"({center_x},{center_y})",
+                (center_x + 10, center_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (0, 255, 0),
+                2
+            )
+
             # Detect current zone
             zone = get_zone(center_x, center_y)
+
+            update_journey(track_id, zone)
 
             previous_zone = zone_history.get(track_id)
 
@@ -93,6 +131,17 @@ while True:
                             f"{dwell_seconds:.1f}s in {previous_zone}"
                         )
 
+                        visitor_dwell.append(
+                            {
+                                "visitor_id": track_id,
+                                "zone": previous_zone,
+                                "seconds": round(
+                                    dwell_seconds,
+                                    2
+                                )
+                            }
+                        )
+
                 zone_entry_time[track_id] = current_time
 
                 print(
@@ -100,6 +149,16 @@ while True:
                 )
 
                 send_zone_event(track_id, zone)
+
+                if zone == "CASH_COUNTER":
+
+                    print(
+                        f"CHECKOUT EVENT -> Visitor {track_id}"
+                    )
+
+                    add_checkout(track_id)
+
+                    print_metrics()
 
                 zone_history[track_id] = zone
 
@@ -137,6 +196,8 @@ while True:
                     print(
                         f"ENTRY EVENT -> Visitor {track_id}"
                     )
+
+                    add_visitor(track_id)
 
                     send_entry_event(track_id)
 
