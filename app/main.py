@@ -1,3 +1,10 @@
+from pipeline.load_pos import load_pos_data
+
+from pipeline.purchase_analytics import (
+    purchase_events,
+    brand_sales
+)
+
 from fastapi import FastAPI
 from app.models import Event
 from pipeline.analytics import (
@@ -10,6 +17,8 @@ from pipeline.analytics import (
 app = FastAPI(
     title="Store Intelligence API"
 )
+
+load_pos_data()
 
 # Temporary in-memory storage
 events_db = []
@@ -244,3 +253,57 @@ def anomalies():
     return {
         "anomalies": anomalies
     }
+
+@app.get("/purchases")
+def get_purchases():
+
+    print(type(purchase_events[0]))
+
+    print(purchase_events[0])
+
+    return {
+        "count": len(purchase_events),
+        "purchases": purchase_events[:5]
+    }
+
+@app.get("/brands")
+def get_brands():
+
+    return brand_sales
+
+@app.get("/revenue")
+def get_revenue():
+
+    total_revenue = 0
+
+    total_orders = len(
+        purchase_events
+    )
+
+    for purchase in purchase_events:
+
+        total_revenue += (
+            purchase["gmv"]
+        )
+
+    avg_order_value = 0
+
+    if total_orders > 0:
+
+        avg_order_value = (
+            total_revenue
+            / total_orders
+        )
+
+    return {
+        "total_revenue": round(
+            total_revenue,
+            2
+        ),
+        "total_orders": total_orders,
+        "avg_order_value": round(
+            avg_order_value,
+            2
+        )
+    }
+

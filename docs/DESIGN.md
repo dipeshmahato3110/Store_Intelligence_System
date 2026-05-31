@@ -238,3 +238,25 @@ Goal:
 
 Transform raw CCTV footage into actionable retail intelligence.
 
+
+# Design Update - 2026-06-01
+
+## Implemented
+
+- Customer Journey Tracking
+- Dwell Time Analytics
+- Conversion Analytics
+- Purchase Analytics
+- Brand Sales Analytics
+- Revenue Analytics
+
+## API Endpoints
+
+/health
+/events
+/journeys
+/dwell
+/conversion
+/purchases
+/brands
+/revenue

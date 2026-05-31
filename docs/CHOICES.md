@@ -165,3 +165,20 @@ Reason:
 
 * Closely aligned with retail intelligence objectives
 * Strong evaluation criterion for reviewers
+
+
+# Choices - 2026-06-01
+
+## Analytics Architecture
+
+- Chose FastAPI as analytics backend.
+- Chose in-memory storage for prototype phase.
+- Chose YOLOv8 tracking for visitor detection.
+- Chose zone-based customer journey tracking.
+- Chose POS CSV ingestion before database integration.
+
+## POS Analytics
+
+- Added purchases endpoint.
+- Added brand sales endpoint.
+- Added revenue endpoint.
