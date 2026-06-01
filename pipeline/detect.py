@@ -33,6 +33,8 @@ ENTRY_LINE_X = 800
 
 # Store previous x positions of tracked persons
 zone_history = {}
+zone_candidate = {}
+zone_candidate_count = {}
 visitor_zones = {}
 previous_positions = {}
 
@@ -108,6 +110,53 @@ while True:
 
             # Detect current zone
             zone = get_zone(center_x, center_y)
+
+            raw_zone = zone
+
+            previous_zone = zone_history.get(
+                track_id
+            )
+
+            if raw_zone != previous_zone:
+
+                if (
+                    zone_candidate.get(track_id)
+                    != raw_zone
+                ):
+
+                    zone_candidate[
+                        track_id
+                    ] = raw_zone
+
+                    zone_candidate_count[
+                        track_id
+                    ] = 1
+
+                else:
+
+                    zone_candidate_count[
+                        track_id
+                    ] += 1
+
+                if (
+                    zone_candidate_count[
+                        track_id
+                    ] >= 10
+                ):
+
+                    zone = raw_zone
+
+                else:
+
+                    zone = previous_zone
+
+            else:
+
+                zone = raw_zone
+
+                zone_candidate_count[
+                    track_id
+                ] = 0
 
             update_journey(track_id, zone)
 
