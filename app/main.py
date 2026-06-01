@@ -1,3 +1,4 @@
+from collections import defaultdict
 from pipeline.load_pos import load_pos_data
 from collections import defaultdict
 from pipeline.purchase_analytics import (
@@ -469,6 +470,109 @@ def zone_performance():
                         0
                     ),
                     2
+                ),
+
+            "purchases":
+                brand_purchases.get(
+                    brand,
+                    0
+                )
+        }
+
+    return result
+
+@app.get("/dwell-v2")
+def get_dwell_v2():
+
+    dwell_events = []
+
+    for event in events_db:
+
+        if event["event_type"] == "DWELL":
+
+            dwell_events.append(
+                {
+                    "visitor_id":
+                        event["visitor_id"],
+
+                    "zone":
+                        event["zone_id"],
+
+                    "seconds":
+                        round(
+                            event["dwell_ms"] / 1000,
+                            2
+                        )
+                }
+            )
+
+    return {
+        "count": len(dwell_events),
+        "records": dwell_events
+    }
+
+
+
+@app.get("/zone-performance-v2")
+def zone_performance_v2():
+
+    mapping = {
+        "GOOD_VIBES": "Good Vibes",
+        "DERMDOC": "DERMDOC",
+        "FACES_CANADA": "Faces Canada",
+        "MAYBELLINE": "Maybelline"
+    }
+
+    zone_visitors = defaultdict(set)
+    zone_dwell = defaultdict(list)
+
+    for event in events_db:
+
+        if event["event_type"] != "DWELL":
+            continue
+
+        zone = event["zone_id"]
+
+        zone_visitors[zone].add(
+            event["visitor_id"]
+        )
+
+        zone_dwell[zone].append(
+            event["dwell_ms"] / 1000
+        )
+
+    result = {}
+
+    for zone, brand in mapping.items():
+
+        visitors = len(
+            zone_visitors[zone]
+        )
+
+        avg_dwell = 0
+
+        if len(zone_dwell[zone]) > 0:
+
+            avg_dwell = (
+                sum(zone_dwell[zone])
+                /
+                len(zone_dwell[zone])
+            )
+
+        result[zone] = {
+
+            "visitors": visitors,
+
+            "avg_dwell_seconds":
+                round(
+                    avg_dwell,
+                    2
+                ),
+
+            "revenue":
+                brand_sales.get(
+                    brand,
+                    0
                 ),
 
             "purchases":
