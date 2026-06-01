@@ -1,3 +1,6 @@
+from send_dwell_event import (
+    send_dwell_event
+)
 from send_dwell_event import send_dwell_event
 from analytics import visitor_dwell
 from conversion import (
@@ -138,15 +141,10 @@ while True:
                             dwell_seconds
                         )
 
-                        visitor_dwell.append(
-                            {
-                                "visitor_id": track_id,
-                                "zone": previous_zone,
-                                "seconds": round(
-                                    dwell_seconds,
-                                    2
-                                )
-                            }
+                        send_dwell_event(
+                            track_id,
+                            previous_zone,
+                            dwell_seconds
                         )
 
                         dwell_seconds = (
