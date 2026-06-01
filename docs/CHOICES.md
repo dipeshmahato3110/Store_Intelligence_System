@@ -182,3 +182,95 @@ Reason:
 - Added purchases endpoint.
 - Added brand sales endpoint.
 - Added revenue endpoint.
+
+# Choices - 2026-06-02
+
+## Event-Driven Dwell Analytics
+
+### Decision
+
+Moved dwell analytics from local Python memory to FastAPI event ingestion.
+
+Previous:
+
+detect.py
+→ visitor_dwell list
+
+New:
+
+detect.py
+→ DWELL Event
+→ FastAPI
+→ events_db
+
+### Reason
+
+* Eliminates process isolation issues
+* Aligns with event-driven architecture
+* Makes analytics APIs independent of detection process
+* Easier future migration to PostgreSQL
+
+---
+
+## Zone Performance KPI
+
+### Decision
+
+Created zone-performance analytics combining:
+
+* Visitor Count
+* Average Dwell Time
+* Revenue
+* Purchases
+
+### Reason
+
+Retail managers need business KPIs rather than raw tracking data.
+
+The KPI provides:
+
+Zone
+→ Engagement
+→ Revenue
+→ Conversion Signals
+
+---
+
+## Zone Stability Filter
+
+### Problem
+
+Visitors standing near zone boundaries generated false transitions.
+
+Example:
+
+DERMDOC
+→ MINIMALIST
+→ DERMDOC
+→ MINIMALIST
+
+### Decision
+
+Require multiple consecutive detections before accepting a zone transition.
+
+### Reason
+
+* Reduces tracking noise
+* Produces cleaner journeys
+* Improves dwell accuracy
+* Improves conversion analytics
+
+---
+
+## Submission Strategy
+
+Focus shifted from feature development to:
+
+* Documentation
+* Demo preparation
+* Screenshots
+* Presentation
+
+Reason:
+
+Core analytics platform is functionally complete and submission-ready.

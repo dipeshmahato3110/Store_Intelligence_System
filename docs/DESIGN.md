@@ -260,3 +260,121 @@ Transform raw CCTV footage into actionable retail intelligence.
 /purchases
 /brands
 /revenue
+
+# Design Update - 2026-06-02
+
+## New Components Added
+
+### DWELL Event Pipeline
+
+Architecture:
+
+Visitor Movement
+       ↓
+Zone Change
+       ↓
+Dwell Calculation
+       ↓
+DWELL Event
+       ↓
+FastAPI Event Ingestion
+       ↓
+Analytics APIs
+
+---
+
+### Zone Performance Engine
+
+Inputs:
+
+* DWELL Events
+* Visitor Analytics
+* POS Revenue Data
+* Purchase Data
+
+Outputs:
+
+* Visitors per Zone
+* Average Dwell per Zone
+* Revenue per Zone
+* Purchases per Zone
+
+Endpoint:
+
+GET /zone-performance-v2
+
+---
+
+### Event-Driven Analytics Model
+
+Current Analytics Flow
+
+ENTRY Event
+       ↓
+ZONE_ENTER Event
+       ↓
+DWELL Event
+       ↓
+Analytics Engine
+       ↓
+Business Intelligence APIs
+
+This architecture removes dependency on local runtime variables and prepares the platform for future database persistence.
+
+---
+
+## Business Intelligence Layer
+
+Implemented KPIs:
+
+### Customer Analytics
+
+* Visitor Tracking
+* Customer Journeys
+* Dwell Time Analytics
+* Conversion Analytics
+
+### Revenue Analytics
+
+* Revenue by Brand
+* Revenue by Zone
+* Top Brand Performance
+* Purchase Analytics
+
+### Zone Intelligence
+
+* Zone Visits
+* Average Dwell Time
+* Zone Revenue
+* Zone Performance KPI
+
+---
+
+## Current System Status
+
+### Completed
+
+* YOLOv8 Detection
+* Multi Object Tracking
+* Entry Detection
+* Zone Detection
+* Journey Analytics
+* Dwell Analytics
+* Conversion Analytics
+* POS Integration
+* Brand Analytics
+* Revenue Analytics
+* Zone Performance Analytics
+* Event Driven Architecture
+* Zone Stability Filtering
+
+### Future Enhancements
+
+* PostgreSQL Persistence
+* Dashboard UI
+* Multi-Camera Fusion
+* Cross-Camera Re-Identification
+* Real-Time Streaming Dashboard
+
+Project Status: Near Production-Ready Prototype
+

@@ -2,9 +2,24 @@
 
 ## Overview
 
-An AI-powered retail analytics platform that transforms CCTV footage into actionable store intelligence.
+Store Intelligence System is an AI-powered retail analytics platform that converts CCTV footage into actionable business intelligence.
 
-The system combines computer vision, event-driven architecture, customer journey analytics, dwell analytics, conversion analytics, and POS sales integration to generate real-time retail insights.
+The system uses Computer Vision, Event-Driven Architecture, and POS Analytics to track customer movement, analyze engagement, measure dwell time, and generate store performance insights.
+
+---
+
+## Problem Statement
+
+Retail stores generate large volumes of customer interaction data, but most of it remains unused.
+
+The objective is to:
+
+* Track customer movement inside stores
+* Measure zone engagement
+* Generate customer journeys
+* Calculate dwell times
+* Analyze conversions
+* Connect in-store behavior with POS sales data
 
 ---
 
@@ -17,31 +32,33 @@ The system combines computer vision, event-driven architecture, customer journey
 * Entry Detection
 * Zone Detection
 * Customer Journey Tracking
-
-### Analytics
-
-* Visitor Tracking
-* Footfall Metrics
-* Customer Journey Analytics
 * Dwell Time Analytics
-* Zone Analytics
-* Conversion Analytics
-* Brand Analytics
-* Revenue Analytics
-* Purchase Analytics
+* Zone Stability Filtering
 
-### Backend
+### Event Processing
 
-* FastAPI
+* ENTRY Events
+* ZONE_ENTER Events
+* DWELL Events
 * Event Ingestion API
-* Metrics API
-* Funnel Analytics API
-* Journey Analytics API
-* Dwell Analytics API
-* Conversion Analytics API
-* Purchase Analytics API
-* Brand Analytics API
-* Revenue Analytics API
+* Real-Time Analytics
+
+### Business Analytics
+
+* Customer Journeys
+* Footfall Metrics
+* Zone Performance Analytics
+* Revenue Analytics
+* Brand Analytics
+* Conversion Analytics
+* Top Brand Analysis
+
+### POS Integration
+
+* Purchase Data Loading
+* Revenue Analysis
+* Brand Revenue Mapping
+* Zone Revenue Analytics
 
 ---
 
@@ -49,108 +66,68 @@ The system combines computer vision, event-driven architecture, customer journey
 
 CCTV Cameras
 → YOLOv8 Detection
-→ Person Tracking
-→ Entry Detection
+→ Multi Object Tracking
 → Zone Detection
 → Event Generation
 → FastAPI Backend
-→ Analytics Layer
+→ Analytics Engine
 → Business Intelligence APIs
-
----
-
-## API Endpoints
-
-### System
-
-* GET /health
-
-### Events
-
-* GET /events
-* POST /events/ingest
-
-### Visitor Analytics
-
-* GET /metrics
-* GET /journeys
-* GET /dwell
-* GET /conversion
-
-### POS Analytics
-
-* GET /purchases
-* GET /brands
-* GET /revenue
-
-### Business Analytics
-
-* GET /funnel
-* GET /anomalies
-
----
-
-## Current Status
-
-### Completed
-
-* YOLOv8 Detection Pipeline
-* Multi-Object Tracking
-* Entry Event Detection
-* Zone Detection
-* Customer Journey Tracking
-* Dwell Analytics
-* Conversion Analytics
-* FastAPI Backend
-* Event Ingestion API
-* Purchase Analytics
-* Brand Analytics
-* Revenue Analytics
-* POS CSV Integration
-
-### In Progress
-
-* Brand Conversion Analytics
-* Multi-Camera Analytics
-* Zone Stability Filtering
-* Dashboard Development
-
-### Planned
-
-* Multi-Camera Visitor Re-Identification
-* Real-Time Dashboard
-* Database Persistence
-* Advanced Retail Insights
 
 ---
 
 ## Tech Stack
 
-### AI / Computer Vision
-
 * Python
 * YOLOv8
 * OpenCV
-
-### Backend
-
 * FastAPI
+* Pandas
 * Pydantic
 
-### Analytics
+---
 
-* Pandas
-* NumPy
+## APIs
 
-### Data Sources
+### Analytics APIs
 
-* CCTV Video Streams
-* POS Transaction Data (CSV)
+* /journeys
+* /dwell-v2
+* /conversion
+* /revenue
+* /top-brands
+* /zone-brand-revenue
+* /zone-performance-v2
+
+### System APIs
+
+* /events
+* /metrics
+* /health
+
+---
+
+## Results
+
+* Customer Journey Tracking
+* Zone Engagement Measurement
+* Revenue Intelligence
+* Brand Performance Analytics
+* Event Driven Retail Analytics
+
+---
+
+## Future Improvements
+
+* Multi-Camera Analytics
+* Cross-Camera Re-Identification
+* PostgreSQL Persistence
+* Real-Time Dashboard
+* Predictive Store Analytics
 
 ---
 
 ## Challenge
 
-Purplle Tech Challenge 2026 – Round 2
+Purplle Tech Challenge 2026
 
-Store Intelligence System using CCTV Analytics, Customer Journey Intelligence, POS Integration, and Real-Time Event Processing.
+Store Intelligence System using CCTV Analytics and Real-Time Event Processing.
