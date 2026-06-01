@@ -1,8 +1,9 @@
 from pipeline.load_pos import load_pos_data
-
+from collections import defaultdict
 from pipeline.purchase_analytics import (
     purchase_events,
-    brand_sales
+    brand_sales,
+    brand_purchases
 )
 
 from fastapi import FastAPI
@@ -307,3 +308,174 @@ def get_revenue():
         )
     }
 
+
+@app.get("/brand-conversion")
+def get_brand_conversion():
+
+    result = {}
+
+    for brand in brand_sales:
+
+        revenue = brand_sales.get(
+            brand,
+            0
+        )
+
+        purchases = brand_purchases.get(
+            brand,
+            0
+        )
+
+        avg_sale = 0
+
+        if purchases > 0:
+
+            avg_sale = (
+                revenue
+                / purchases
+            )
+
+        result[brand] = {
+            "purchases": purchases,
+            "revenue": round(
+                revenue,
+                2
+            ),
+            "avg_sale": round(
+                avg_sale,
+                2
+            )
+        }
+
+    return result
+
+
+@app.get("/top-brands")
+def get_top_brands():
+
+    sorted_brands = sorted(
+        brand_sales.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    result = []
+
+    for brand, revenue in sorted_brands:
+
+        result.append(
+            {
+                "brand": brand,
+                "revenue": revenue,
+                "purchases":
+                    brand_purchases.get(
+                        brand,
+                        0
+                    )
+            }
+        )
+
+    return result[:10]
+
+@app.get("/zone-brand-revenue")
+def zone_brand_revenue():
+
+    mapping = {
+        "GOOD_VIBES": "Good Vibes",
+        "DERMDOC": "DERMDOC",
+        "FACES_CANADA": "Faces Canada",
+        "MAYBELLINE": "Maybelline"
+    }
+
+    result = {}
+
+    for zone, brand in mapping.items():
+
+        result[zone] = {
+            "brand": brand,
+            "revenue": round(
+                brand_sales.get(
+                    brand,
+                    0
+                ),
+                2
+            ),
+            "purchases":
+                brand_purchases.get(
+                    brand,
+                    0
+                )
+        }
+
+    return result
+
+@app.get("/zone-performance")
+def zone_performance():
+
+    mapping = {
+        "GOOD_VIBES": "Good Vibes",
+        "DERMDOC": "DERMDOC",
+        "FACES_CANADA": "Faces Canada",
+        "MAYBELLINE": "Maybelline"
+    }
+
+    zone_visitors = defaultdict(set)
+    zone_dwell = defaultdict(list)
+
+    for record in visitor_dwell:
+
+        zone = record["zone"]
+
+        zone_visitors[zone].add(
+            record["visitor_id"]
+        )
+
+        zone_dwell[zone].append(
+            record["seconds"]
+        )
+
+    result = {}
+
+    for zone, brand in mapping.items():
+
+        visitors = len(
+            zone_visitors[zone]
+        )
+
+        avg_dwell = 0
+
+        if len(zone_dwell[zone]) > 0:
+
+            avg_dwell = (
+                sum(zone_dwell[zone])
+                /
+                len(zone_dwell[zone])
+            )
+
+        result[zone] = {
+
+            "visitors": visitors,
+
+            "avg_dwell_seconds":
+                round(
+                    avg_dwell,
+                    2
+                ),
+
+            "revenue":
+                round(
+                    brand_sales.get(
+                        brand,
+                        0
+                    ),
+                    2
+                ),
+
+            "purchases":
+                brand_purchases.get(
+                    brand,
+                    0
+                )
+        }
+
+    return result

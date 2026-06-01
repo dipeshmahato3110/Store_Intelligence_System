@@ -4,7 +4,8 @@ import pandas as pd
 
 from pipeline.purchase_analytics import (
     purchase_events,
-    brand_sales
+    brand_sales,
+    brand_purchases
 )
 
 CSV_FILE = (
@@ -37,6 +38,11 @@ def load_pos_data():
             brand_sales[brand] = 0
 
         brand_sales[brand] += float(row["GMV"])
+
+        if brand not in brand_purchases:
+            brand_purchases[brand] = 0
+
+        brand_purchases[brand] += 1
 
     print(
         f"Loaded {len(purchase_events)} purchases"
