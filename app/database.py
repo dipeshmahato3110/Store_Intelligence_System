@@ -1,11 +1,8 @@
-from sqlalchemy import create_engine
+import sqlite3
 
-DATABASE_URL = (
-    "postgresql://admin:admin@localhost:5432/storedb"
-)
+DB_NAME = "store_intelligence.db"
 
-engine = create_engine(DATABASE_URL)
 
-connection = engine.connect()
+def get_connection():
 
-print("Database Connected Successfully")
+    return sqlite3.connect(DB_NAME)

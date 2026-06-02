@@ -1,3 +1,7 @@
+from fastapi import Request
+from fastapi.templating import Jinja2Templates
+
+from app.database import get_connection
 from collections import defaultdict
 from pipeline.load_pos import load_pos_data
 from collections import defaultdict
@@ -6,6 +10,10 @@ from pipeline.purchase_analytics import (
     brand_sales,
     brand_purchases
 )
+
+from app.db_models import create_tables
+
+create_tables()
 
 from fastapi import FastAPI
 from app.models import Event
@@ -19,6 +27,12 @@ from pipeline.analytics import (
 app = FastAPI(
     title="Store Intelligence API"
 )
+
+templates = Jinja2Templates(
+    directory="templates"
+)
+
+print(templates)
 
 load_pos_data()
 
@@ -154,16 +168,53 @@ def ingest_event(event: Event):
 
     events_db.append(event_data)
 
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO events(
+            event_id,
+            visitor_id,
+            event_type,
+            zone_id,
+            dwell_ms,
+            timestamp
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (
+            event.event_id,
+            event.visitor_id,
+            event.event_type,
+            event.zone_id,
+            event.dwell_ms,
+            event.timestamp
+        )
+    )
+
+    conn.commit()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM events"
+    )
+
+    total_events = cursor.fetchone()[0]
+
     print("=" * 50)
     print("EVENT RECEIVED")
     print(event_data)
-    print(f"TOTAL EVENTS: {len(events_db)}")
+    print(f"TOTAL EVENTS: {total_events}")
     print("=" * 50)
+
+    conn.close()
 
     return {
         "message": "Event Ingested",
-        "total_events": len(events_db)
+        "total_events": total_events
     }
+
 @app.get("/events")
 def get_events():
 
@@ -583,3 +634,48 @@ def zone_performance_v2():
         }
 
     return result
+
+@app.get("/events-db")
+def get_events_db():
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            event_id,
+            visitor_id,
+            event_type,
+            zone_id,
+            dwell_ms,
+            timestamp
+        FROM events
+        """
+    )
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return {
+        "count": len(rows),
+        "events": rows
+    }
+
+@app.get("/dashboard")
+def dashboard(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard.html"
+    )
+
+@app.get("/test-template")
+def test_template(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard.html"
+    )
