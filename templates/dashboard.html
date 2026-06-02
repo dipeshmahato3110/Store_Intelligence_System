@@ -3,6 +3,52 @@
 
 <head>
 
+    <style>
+        body {
+            background: #121212;
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+        }
+
+        .card {
+            background: #1e1e1e;
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .table {
+            color: white !important;
+        }
+
+        .table th,
+        .table td {
+            background: #e8d3d3 !important;
+            color: rgb(0, 0, 0) !important;
+            border-color: #000000 !important;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            background-color: #f6a5a5 !important;
+            color: rgb(0, 0, 0) !important;
+        }
+
+        canvas {
+            max-height: 450px;
+        }
+
+        .text-purple {
+            color: #d63384;
+        }
+
+        footer {
+            color: #aaa;
+        }
+    </style>
+
     <title>
         Store Intelligence Dashboard
     </title>
@@ -15,70 +61,197 @@
 
 <body class="bg-light">
 
-    <div class="container mt-4">
 
-        <h1 class="mb-4"> Store Intelligence Dashboard </h1> <!-- KPI CARDS -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5>Revenue</h5>
-                        <h2 id="revenue"> Loading... </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5>Orders</h5>
-                        <h2 id="orders"> Loading... </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5>Visitors</h5>
-                        <h2 id="visitors"> Loading... </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5>Conversion %</h5>
-                        <h2 id="conversion"> Loading... </h2>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- BRAND REVENUE CHART -->
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <h3> Top Brand Revenue </h3> <canvas id="brandChart"></canvas>
-            </div>
-        </div> <!-- ZONE PERFORMANCE CHART -->
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <h3> Zone Performance </h3> <canvas id="zoneChart"></canvas>
-            </div>
-        </div> <!-- TOP BRANDS TABLE -->
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <h3> Top Brands </h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Revenue</th>
-                            <th>Purchases</th>
-                        </tr>
-                    </thead>
-                    <tbody id="brandTable"> </tbody>
-                </table>
-            </div>
+    <div class="container py-4">
+
+        <div class="text-center mb-5">
+
+            <img src="https://www.purplle.com/favicon.ico" width="70" class="mb-3">
+
+            <h1 class="fw-bold">
+                Store Intelligence Dashboard
+            </h1>
+
+            <p class="text-secondary">
+                Purplle Tech Challenge 2026
+            </p>
+
         </div>
 
+        <!-- KPI -->
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="card shadow-lg">
+
+                    <div class="card-body text-center">
+
+                        <h5>Revenue</h5>
+
+                        <h2 id="revenue" class="text-success fw-bold">
+                            Loading...
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="card shadow-lg">
+
+                    <div class="card-body text-center">
+
+                        <h5>Orders</h5>
+
+                        <h2 id="orders" class="text-primary fw-bold">
+                            Loading...
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="card shadow-lg">
+
+                    <div class="card-body text-center">
+
+                        <h5>Visitors</h5>
+
+                        <h2 id="visitors" class="text-warning fw-bold">
+                            Loading...
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="card shadow-lg">
+
+                    <div class="card-body text-center">
+
+                        <h5>Conversion %</h5>
+
+                        <h2 id="conversion" class="text-purple fw-bold">
+                            Loading...
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BRAND CHART -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h3>
+                    Top Brand Revenue
+                </h3>
+
+                <canvas id="brandChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- ZONE -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h3>
+                    Zone Performance
+                </h3>
+
+                <canvas id="zoneChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- PIE -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h3>
+                    Revenue Distribution
+                </h3>
+
+                <canvas id="pieChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h3>
+                    Top Brands
+                </h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Brand</th>
+                                <th>Revenue</th>
+                                <th>Purchases</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="brandTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer class="text-center mt-5">
+
+            Store Intelligence Platform |
+            Purplle Tech Challenge 2026
+
+        </footer>
+
     </div>
+
+
 
     <script>
 
@@ -112,58 +285,15 @@
                     data.conversion_rate + '%'
             })
 
-        fetch('/brands')
-            .then(res => res.json())
-            .then(data => {
-
-                const labels =
-                    Object.keys(data)
-
-                const values =
-                    Object.values(data)
-
-                new Chart(
-                    document.getElementById(
-                        'brandChart'
-                    ),
-                    {
-                        type: 'bar',
-
-                        data: {
-
-                            labels: labels,
-
-                            datasets: [
-                                {
-                                    label:
-                                        'Brand Revenue',
-
-                                    data: values
-                                }
-                            ]
-                        }
-                    }
-                )
-
-            })
-
-        // =====================
-        // TOP BRANDS CHART
-        // =====================
-
-        // fetch('/top-brands')
+        // fetch('/brands')
         //     .then(res => res.json())
         //     .then(data => {
 
         //         const labels =
-        //             data.map(
-        //                 item => item.brand
-        //             )
+        //             Object.keys(data)
 
-        //         const revenue =
-        //             data.map(
-        //                 item => item.revenue
-        //             )
+        //         const values =
+        //             Object.values(data)
 
         //         new Chart(
         //             document.getElementById(
@@ -178,31 +308,74 @@
 
         //                     datasets: [
         //                         {
-        //                             label: 'Revenue',
+        //                             label:
+        //                                 'Brand Revenue',
 
-        //                             data: revenue
+        //                             data: values
         //                         }
         //                     ]
-        //                 },
-
-        //                 options: {
-
-        //                     responsive: true,
-
-        //                     plugins: {
-
-        //                         legend: {
-        //                             display: true
-        //                         }
-
-        //                     }
-
         //                 }
-
         //             }
         //         )
 
         //     })
+
+        // =====================
+        // TOP BRANDS CHART
+        // =====================
+
+        fetch('/top-brands')
+            .then(res => res.json())
+            .then(data => {
+
+                const labels =
+                    data.map(
+                        item => item.brand
+                    )
+
+                const revenue =
+                    data.map(
+                        item => item.revenue
+                    )
+
+                new Chart(
+                    document.getElementById(
+                        'brandChart'
+                    ),
+                    {
+                        type: 'bar',
+
+                        data: {
+
+                            labels: labels,
+
+                            datasets: [
+                                {
+                                    label: 'Revenue',
+
+                                    data: revenue
+                                }
+                            ]
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            plugins: {
+
+                                legend: {
+                                    display: true
+                                }
+
+                            }
+
+                        }
+
+                    }
+                )
+
+            })
 
         // =====================
         // TOP BRANDS TABLE
@@ -266,7 +439,40 @@
             })
 
 
+        fetch('/top-brands')
+            .then(res => res.json())
+            .then(data => {
 
+                const labels =
+                    data.slice(0, 5).map(
+                        x => x.brand
+                    )
+
+                const values =
+                    data.slice(0, 5).map(
+                        x => x.revenue
+                    )
+
+                new Chart(
+                    document.getElementById(
+                        'pieChart'
+                    ),
+                    {
+                        type: 'pie',
+
+                        data: {
+                            labels: labels,
+
+                            datasets: [
+                                {
+                                    data: values
+                                }
+                            ]
+                        }
+                    }
+                )
+
+            })
 
     </script>
 
