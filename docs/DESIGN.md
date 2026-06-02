@@ -378,3 +378,164 @@ Implemented KPIs:
 
 Project Status: Near Production-Ready Prototype
 
+# Design Update - 2026-06-02
+
+## Implemented Components
+
+### Persistence Layer
+
+Added:
+
+* SQLite Database
+* Event Storage
+* Event Retrieval
+
+Flow:
+
+Event
+→ FastAPI
+→ SQLite
+→ Analytics API
+
+---
+
+### Dashboard Layer
+
+Added:
+
+* Dashboard Page
+* KPI Cards
+* Revenue Analytics
+* Visitor Analytics
+* Conversion Analytics
+
+Outputs:
+
+* Revenue
+* Orders
+* Visitors
+* Conversion %
+
+---
+
+### Business Intelligence Layer
+
+Implemented:
+
+#### Brand Revenue Analytics
+
+Metrics:
+
+* Revenue by Brand
+* Purchase Count by Brand
+* Average Sale Value
+
+Endpoints:
+
+* /brands
+* /top-brands
+
+---
+
+#### Zone Performance Analytics
+
+Metrics:
+
+* Visitors per Zone
+* Average Dwell Time
+* Revenue Attribution
+
+Endpoints:
+
+* /zone-performance
+* /zone-performance-v2
+
+---
+
+### Visualization Layer
+
+Implemented:
+
+#### Brand Revenue Chart
+
+Shows:
+
+* Top revenue-generating brands
+
+#### Zone Performance Chart
+
+Shows:
+
+* Visitor engagement by zone
+
+#### Revenue Distribution Pie Chart
+
+Shows:
+
+* Revenue contribution distribution
+
+#### Top Brands Table
+
+Shows:
+
+* Brand
+* Revenue
+* Purchase Count
+
+---
+
+## Final System Architecture
+
+```text
+CCTV Cameras
+        ↓
+YOLOv8 Detection
+        ↓
+Tracking
+        ↓
+Zone Detection
+        ↓
+Journey Analytics
+        ↓
+Dwell Analytics
+        ↓
+POS Integration
+        ↓
+FastAPI APIs
+        ↓
+SQLite Database
+        ↓
+Dashboard
+```
+
+---
+
+## Current Project Status
+
+### Completed
+
+* YOLOv8 Detection
+* Multi-Object Tracking
+* Entry Detection
+* Zone Analytics
+* Journey Analytics
+* Dwell Analytics
+* Conversion Analytics
+* POS Integration
+* Brand Analytics
+* Revenue Analytics
+* SQLite Persistence
+* Dashboard UI
+* Business Charts
+* Zone Stability Filtering
+
+### Future Enhancements
+
+* Multi-Camera Fusion
+* PostgreSQL
+* Real-Time Streaming
+* Heatmaps
+* Staff Analytics
+* Cloud Deployment
+
+Project Status: MVP Complete

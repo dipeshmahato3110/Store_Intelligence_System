@@ -274,3 +274,104 @@ Focus shifted from feature development to:
 Reason:
 
 Core analytics platform is functionally complete and submission-ready.
+
+
+# Choices - 2026-06-02
+
+## Data Persistence
+
+Selected:
+
+* SQLite database
+* Local file-based storage
+
+Reason:
+
+* Persistent storage across FastAPI restarts
+* Lightweight and easy to deploy
+* No external database dependency for prototype phase
+
+Future:
+
+* PostgreSQL migration
+
+---
+
+## Dashboard Architecture
+
+Selected:
+
+* Server-side HTML dashboard
+* Bootstrap 5 UI
+* Chart.js visualizations
+
+Reason:
+
+* Rapid development
+* Easy reviewer access
+* Minimal frontend complexity
+
+---
+
+## Dashboard KPIs
+
+Selected:
+
+* Total Revenue
+* Total Orders
+* Total Visitors
+* Conversion Rate
+
+Reason:
+
+* Provides immediate business visibility
+* Aligns with retail analytics objectives
+
+---
+
+## Dashboard Visualizations
+
+Selected:
+
+* Brand Revenue Bar Chart
+* Zone Performance Chart
+* Revenue Distribution Pie Chart
+* Top Brands Table
+
+Reason:
+
+* Enables quick identification of top-performing brands
+* Supports zone-level performance analysis
+* Improves business insight communication
+
+---
+
+## Zone Stability Filtering
+
+Selected:
+
+* Zone transition smoothing
+* Consecutive zone confirmation before transition
+
+Reason:
+
+* Reduces false zone switches near boundaries
+* Improves customer journey accuracy
+* Produces more reliable dwell analytics
+
+---
+
+## Submission Strategy
+
+Selected:
+
+* Complete end-to-end analytics pipeline
+* Working dashboard demonstration
+* POS integration
+* Documentation and presentation
+
+Reason:
+
+* Demonstrates complete business workflow
+* Maximizes evaluation coverage
+* Provides clear reviewer experience
